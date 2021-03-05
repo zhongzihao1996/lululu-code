@@ -8,36 +8,35 @@
 // 索引为 i 的父节点为 floot((i-1)/2)
 const heapSort = (list) => {
   let len = list.length;
+  // 构建最大顶堆
   for (let i = Math.floor((len - 1 - 1) / 2); i >= 0; i--) {
-    // 构建最大顶堆
     maxHeadDown(list, i, len - 1);
   }
   for (let i = len - 1; i >= 0; i--) {
+    // 首尾交换
     swap(list, 0, i);
-    len--;
-    // 最大对不断沉底
-    maxHeadDown(list, 0, len);
+    // 最大值已沉底，对剩余 n-1 继续构建最大堆
+    maxHeadDown(list, 0, i - 1);
   }
-
   return list;
 };
 
-const maxHeadDown = (list, i, len) => {
-  let left = i * 2 + 1; // 左子节点
-  let ritght = i * 2 + 2; // 右子节点
-  let largest = i;
-
-  // 孩子节点比父节点大，交换
-  if (left < len && list[left] > list[largest]) {
-    largest = left;
-  }
-  if (ritght < len && list[ritght] > list[largest]) {
-    largest = ritght;
-  }
-
-  if (largest !== i) {
-    swap(list, i, largest);
-    maxHeadDown(list, largest, len);
+// 从 start 节点开始，不断沉底，若子节点比父节点大，交换后，继续对该节点沉底
+const maxHeadDown = (list, start, end) => {
+  let parent = start;
+  let son = parent * 2 + 1; // 左子节点
+  while (son <= end) {
+    // 如果有右子节点，比较
+    if (son + 1 <= end && list[son + 1] > list[son]) {
+      son++;
+    }
+    if (list[son] > list[parent]) {
+      swap(list, parent, son);
+      parent = son;
+      son = parent * 2 + 1;
+    } else {
+      return;
+    }
   }
 };
 
