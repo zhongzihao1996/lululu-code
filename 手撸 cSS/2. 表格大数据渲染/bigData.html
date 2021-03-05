@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>表格大数据渲染</title>
+</head>
+
+<body>
+  <ul>
+  </ul>
+  <script>
+    const ul = document.querySelector('ul');
+    const total_num = 100000; // 总数据
+    const page_size = 2000; // 每页尺寸
+    const total_page = Math.ceil(total_num / page_size);// 总页数
+    let current_page = 0; // 当前页数
+
+    // 每次 插入节点
+    const appendDom = () => {
+      const fragment = document.createDocumentFragment();
+      for (let i = 0; i < page_size; i++) {
+        const li = document.createElement('li');
+        li.innerText = Math.floor(Math.random() * total_num);
+        fragment.appendChild(li);
+      }
+      ul.appendChild(fragment);
+      current_page++;
+      loop();
+    };
+
+    const loop = () => {
+      if (current_page < total_page) {
+        window.requestAnimationFrame(appendDom);
+      }
+    };
+    loop();
+  </script>
+</body>
+
+</html>
