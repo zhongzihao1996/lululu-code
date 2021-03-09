@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>requestAnimationFrame 简单动画使用</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    #box {
+      width: 100px;
+      height: 100px;
+      background: red;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="box"></div>
+  <script>
+    const box = document.getElementById('box');
+    const windowWidth = window.innerWidth;
+    const windowHeight = window.innerHeight;
+    const boxRect = box.getBoundingClientRect();
+    let left = boxRect.left;
+    let flag = true;
+    function move() {
+      if (flag) {
+        if (left + boxRect.width >= windowWidth) {
+          flag = false;
+        } else {
+          left += 10;
+        }
+      } else {
+        if (left <= 0) {
+          flag = true;
+        }
+        left -= 10;
+      }
+      box.style.left = `${left}px`;
+    }
+
+    const animal = () => {
+      move();
+      window.requestAnimationFrame(animal);
+    };
+    animal();
+  </script>
+</body>
+
+</html>
